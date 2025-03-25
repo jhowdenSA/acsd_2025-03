@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class GildedRoseTest {
 
     @Test
-    public void this_test_needs_a_better_name() {
+    public void update_item_does_not_change_item_namegit pull() {
         // Arrange
         Item[] items = new Item[] { new Item("foo", 0, 0) };
         GildedRose sut = new GildedRose(items);
@@ -16,6 +16,6 @@ public class GildedRoseTest {
         sut.updateQuality();
 
         // Assert
-        assertEquals("fixme", sut.items[0].name);
+        assertEquals("foo", sut.items[0].name);
     }
 }
