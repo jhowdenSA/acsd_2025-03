@@ -31,7 +31,7 @@ public class GildedRoseTest {
     void LegendaryItem_NeverHasToBeSold() {
         GildedRose sut = new GildedRose(createItemArray("Sulfuras, Hand of Ragnaros", 1, 80));
         sut.updateQuality();
-        assertEquals(1, sut.items[0].sellIn, "SellIn is not decreased for this legendary item");
+        assertEquals(1, sut.items[0].sellWithinDays, "SellIn is not decreased for this legendary item");
     }
 
     @Test
@@ -39,7 +39,7 @@ public class GildedRoseTest {
         // Covers the code path where sellIn is negative, quality is positive, and *is* Legendary
         GildedRose sut = new GildedRose(createItemArray("Sulfuras, Hand of Ragnaros", -1, 80));
         sut.updateQuality();
-        assertEquals(-1, sut.items[0].sellIn, "SellIn is not decreased for this legendary item");
+        assertEquals(-1, sut.items[0].sellWithinDays, "SellIn is not decreased for this legendary item");
     }
 
     @ParameterizedTest(name = "{0} item SellIn decreases each update")
@@ -47,7 +47,7 @@ public class GildedRoseTest {
     void NonLegendaryItem_SellInDate_Decreases(String itemName) {
         GildedRose sut = new GildedRose(createItemArray(itemName, 8, 10));
         sut.updateQuality();
-        assertEquals(7, sut.items[0].sellIn, "Item sellIn date should decrease by 1 each day");
+        assertEquals(7, sut.items[0].sellWithinDays, "Item sellIn date should decrease by 1 each day");
     }
 
     @ParameterizedTest(name = "{0} item SellIn will be negative after sellIn date reached")
@@ -55,7 +55,7 @@ public class GildedRoseTest {
     void NonLegendaryItem_SellInDate_CanBeNegative(String itemName) {
         GildedRose sut = new GildedRose(createItemArray(itemName, 0, 25));
         sut.updateQuality();
-        assertEquals(-1, sut.items[0].sellIn, "SellIn date will go negative once sellIn date is reached");
+        assertEquals(-1, sut.items[0].sellWithinDays, "SellIn date will go negative once sellIn date is reached");
     }
 
     @Test
@@ -153,8 +153,8 @@ public class GildedRoseTest {
         sut.updateQuality();
 
         assertAll("Each item in the shop should be updated correctly",
-                () -> assertEquals(0, items[0].sellIn, "Legendary item sellIn date is not changed"),
-                () -> assertEquals(9, items[1].sellIn, "generic item sellIn is decreased")
+                () -> assertEquals(0, items[0].sellWithinDays, "Legendary item sellIn date is not changed"),
+                () -> assertEquals(9, items[1].sellWithinDays, "generic item sellIn is decreased")
         );
     }
 

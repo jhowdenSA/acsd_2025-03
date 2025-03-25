@@ -1,9 +1,13 @@
 package gildedrose;
 
 class GildedRose {
-    public static final String HAND_OF_RAGNAROS = "Sulfuras, Hand of Ragnaros";
-    public static final String PASSES = "Backstage passes to a TAFKAL80ETC concert";
     public static final String AGED_BRIE = "Aged Brie";
+    public static final String PASSES = "Backstage passes to a TAFKAL80ETC concert";
+    public static final String HAND_OF_RAGNAROS = "Sulfuras, Hand of Ragnaros";
+    public static final int LOWEST_QUALITY = 0;
+    public static final int HIGHEST_QUALITY = 50;
+    public static final int ITEM_EXPIRES_SOON = 11;
+    public static final int ITEM_EXPIRES_SOONER = 6;
     Item[] items;
 
     public GildedRose(Item[] items) {
@@ -11,32 +15,30 @@ class GildedRose {
     }
 
     public void updateQuality() {
-        for (int i = 0; i < items.length; i++) {
+        for (int i = LOWEST_QUALITY; i < items.length; i++) {
             Item item = items[i];
             if (!item.name.equals(AGED_BRIE)
                     && !item.name.equals(PASSES)) {
-                if (item.quality > 0) {
-                    doesSomething(item);
-                }
+                compareQuality(item);
             } else {
-                agedBrieOrPass(item);
+
+
+                elBlock(item);
             }
 
             if (!item.name.equals(HAND_OF_RAGNAROS)) {
-                item.sellIn = item.sellIn - 1;
+                item.sellWithinDays = item.sellWithinDays - 1;
             }
 
-            if (item.sellIn < 0) {
+            if (item.sellWithinDays < LOWEST_QUALITY) {
                 if (!item.name.equals(AGED_BRIE)) {
                     if (!item.name.equals(PASSES)) {
-                        if (item.quality > 0) {
-                            doesSomething(item);
-                        }
+                        compareQuality(item);
                     } else {
                         item.quality = item.quality - item.quality;
                     }
                 } else {
-                    if (item.quality < 50) {
+                    if (item.quality < HIGHEST_QUALITY) {
                         item.quality = item.quality + 1;
                     }
                 }
@@ -44,29 +46,33 @@ class GildedRose {
         }
     }
 
-    private static void agedBrieOrPass(Item item) {
-        if (item.quality < 50) {
+    private static void compareQuality(Item item) {
+        if (item.quality > LOWEST_QUALITY) {
+            if (!item.name.equals(HAND_OF_RAGNAROS)) {
+                item.quality = item.quality - 1;
+            }
+        }
+    }
+
+
+    private static void elBlock(Item item) {
+        if (item.quality < HIGHEST_QUALITY) {
             item.quality = item.quality + 1;
 
             if (item.name.equals(PASSES)) {
-                if (item.sellIn < 11) {
-                    if (item.quality < 50) {
+                if (item.sellWithinDays < ITEM_EXPIRES_SOON) {
+                    if (item.quality < HIGHEST_QUALITY) {
                         item.quality = item.quality + 1;
                     }
                 }
 
-                if (item.sellIn < 6) {
-                    if (item.quality < 50) {
+                if (item.sellWithinDays < ITEM_EXPIRES_SOONER) {
+                    if (item.quality < HIGHEST_QUALITY) {
                         item.quality = item.quality + 1;
                     }
+
                 }
             }
-        }
-    }
-
-    private static void doesSomething(Item item) {
-        if (!item.name.equals(HAND_OF_RAGNAROS)) {
-            item.quality = item.quality - 1;
         }
     }
 }

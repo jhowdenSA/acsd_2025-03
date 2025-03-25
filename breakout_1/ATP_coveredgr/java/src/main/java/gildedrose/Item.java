@@ -4,18 +4,18 @@ public class Item {
 
     public String name;
 
-    public int sellIn;
+    public int sellWithinDays;
 
     public int quality;
 
-    public Item(String name, int sellIn, int quality) {
+    public Item(String name, int sellWithinDays, int quality) {
         this.name = name;
-        this.sellIn = sellIn;
+        this.sellWithinDays = sellWithinDays;
         this.quality = quality;
     }
 
     @Override
     public String toString() {
-        return this.name + ", " + this.sellIn + ", " + this.quality;
+        return this.name + ", " + this.sellWithinDays + ", " + this.quality;
     }
 }

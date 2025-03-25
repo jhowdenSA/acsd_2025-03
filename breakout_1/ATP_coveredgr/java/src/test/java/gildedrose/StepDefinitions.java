@@ -18,7 +18,7 @@ public class StepDefinitions {
 
     @Given("The item has Sellin of {int}")
     public void the_item_has_sellin_of(Integer sellin) {
-        items[0].sellIn = sellin;
+        items[0].sellWithinDays = sellin;
     }
 
     @Given("the item has Quality of {int}")
